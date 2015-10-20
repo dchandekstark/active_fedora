@@ -13,7 +13,16 @@ describe ActiveTriples::Resource do
   end
 
   describe "validation" do
-    it { is_expected.to be_invalid }
+    it "should have a presence validator on the class" do
+      expect(resource_class.validators.first).to be_a(ActiveModel::Validations::PresenceValidator)
+    end
+    it "should have validation callbacks" do
+      expect(resource_class._validate_callbacks).to be_present
+    end
+    it "should run the validations" do
+      expect(subject).to receive(:run_validations!)
+      subject.valid?
+    end
   end
 
 end
